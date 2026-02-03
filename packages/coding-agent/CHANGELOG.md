@@ -146,6 +146,7 @@
 - Added `ExtensionAPI.getCommands()` to let extensions list available slash commands (extensions, prompt templates, skills) for invocation via `prompt` ([#1210](https://github.com/badlogic/pi-mono/pull/1210) by [@w-winter](https://github.com/w-winter))
 - Added `commands.ts` example extension and exported `SlashCommandInfo` types for command discovery integrations ([#1210](https://github.com/badlogic/pi-mono/pull/1210) by [@w-winter](https://github.com/w-winter))
 - Added local path support for `pi install` and `pi remove` with relative paths stored against the target settings file ([#1216](https://github.com/badlogic/pi-mono/issues/1216))
+- Added `pi-wrapper` CLI tool that runs the coding agent with completion verification. After the agent finishes, it checks if the last message fully answers the original prompt and retries if needed. Available as a standalone binary (`pi-wrapper`) and as an import (`@mariozechner/pi-coding-agent/wrapper`). Supports options: `--model`, `--api-key`, `--max-retries`, `--verbose`.
 
 ### Fixed
 

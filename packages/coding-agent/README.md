@@ -435,6 +435,7 @@ pi config                   # Enable/disable package resources
 |------|-------------|
 | (default) | Interactive mode |
 | `-p`, `--print` | Print response and exit |
+| **pi-wrapper** | Run with automatic completion verification (retries if incomplete) - see [WRAPPER.md](WRAPPER.md) |
 | `--mode json` | Output all events as JSON lines (see [docs/json.md](docs/json.md)) |
 | `--mode rpc` | RPC mode for process integration (see [docs/rpc.md](docs/rpc.md)) |
 | `--export <in> [out]` | Export session to HTML |
@@ -512,6 +513,9 @@ pi "List all .ts files in src/"
 
 # Non-interactive
 pi -p "Summarize this codebase"
+
+# With completion verification (auto-retry if incomplete)
+pi-wrapper "Refactor this function for better performance" --verbose
 
 # Different model
 pi --provider openai --model gpt-4o "Help me refactor"
