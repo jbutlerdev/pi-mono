@@ -16,6 +16,7 @@ export interface Args {
 	systemPrompt?: string;
 	appendSystemPrompt?: string;
 	thinking?: ThinkingLevel;
+	timeout?: number;
 	continue?: boolean;
 	resume?: boolean;
 	help?: boolean;
@@ -118,6 +119,16 @@ export function parseArgs(args: string[], extensionFlags?: Map<string, { type: "
 					),
 				);
 			}
+		} else if (arg === "--timeout" && i + 1 < args.length) {
+			const timeout = args[++i];
+			const parsed = Number.parseInt(timeout, 10);
+			if (!Number.isNaN(parsed) && parsed > 0) {
+				result.timeout = parsed;
+			} else {
+				console.error(
+					chalk.yellow(`Warning: Invalid timeout "${timeout}". Must be a positive number in milliseconds.`),
+				);
+			}
 		} else if (arg === "--print" || arg === "-p") {
 			result.print = true;
 		} else if (arg === "--export" && i + 1 < args.length) {
@@ -205,6 +216,7 @@ ${chalk.bold("Options:")}
   --tools <tools>                Comma-separated list of tools to enable (default: read,bash,edit,write)
                                  Available: read, bash, edit, write, grep, find, ls
   --thinking <level>             Set thinking level: off, minimal, low, medium, high, xhigh
+  --timeout <ms>                 HTTP request timeout in milliseconds (provider-dependent)
   --extension, -e <path>         Load an extension file (can be used multiple times)
   --no-extensions                Disable extension discovery (explicit -e paths still work)
   --skill <path>                 Load a skill file or directory (can be used multiple times)

@@ -7,6 +7,7 @@
 
 import type { AgentMessage } from "@mariozechner/pi-agent-core";
 import type { ImageContent, Message, TextContent } from "@mariozechner/pi-ai";
+import { extractXmlToolCalls } from "@mariozechner/pi-ai";
 
 export const COMPACTION_SUMMARY_PREFIX = `The conversation history before this point was compacted into the following summary:
 
@@ -184,6 +185,31 @@ export function convertToLlm(messages: AgentMessage[]): Message[] {
 				case "user":
 				case "assistant":
 				case "toolResult":
+					// Strip XML tool call tags from user messages before sending to LLM
+					// This prevents models from seeing their own XML output in history
+					if (m.role === "user" && typeof m.content === "string") {
+						const { text: cleanedText, toolCalls } = extractXmlToolCalls(m.content);
+						if (toolCalls.length > 0) {
+							// XML tool calls found - return cleaned text without tags
+							return { ...m, content: cleanedText };
+						}
+					}
+					// Strip XML tool call tags from assistant messages too
+					if (m.role === "assistant") {
+						let modified = false;
+						const cleanedContent = m.content.map((block) => {
+							if (block.type !== "text") return block;
+							const { text: cleanedText, toolCalls } = extractXmlToolCalls(block.text);
+							if (toolCalls.length > 0) {
+								modified = true;
+								return { ...block, text: cleanedText };
+							}
+							return block;
+						});
+						if (modified) {
+							return { ...m, content: cleanedContent };
+						}
+					}
 					return m;
 				default:
 					// biome-ignore lint/correctness/noSwitchDeclarations: fine

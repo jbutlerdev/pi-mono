@@ -375,6 +375,167 @@ All streaming events emitted during assistant message generation:
 | `done` | Stream complete | `reason`: Stop reason ("stop", "length", "toolUse"), `message`: Final assistant message |
 | `error` | Error occurred | `reason`: Error type ("error" or "aborted"), `error`: AssistantMessage with partial content |
 
+### XML Tool Call Parsing
+
+Some models may return tool calls embedded in XML format within text content rather than using native function calling API. The `@mariozechner/pi-ai` package includes a utility parser to handle these cases.
+
+**Supported XML formats:**
+
+```xml
+<!-- Anthropic-style -->
+<tool_calls>
+  <invoke name="bash">{"command": "ls -la"}</invoke>
+</tool_calls>
+
+<!-- Function calls format -->
+<function_calls>
+  <invoke name="read">{"path": "file.txt"}</invoke>
+</function_calls>
+
+<!-- Self-closing tags -->
+<tool_call name="edit">{"path": "file.txt", "oldText": "old", "newText": "new"}</think>
+```
+
+**Basic usage with streaming:**
+
+```typescript
+import { createXmlToolCallParser } from '@mariozechner/pi-ai';
+
+const s = stream(model, context);
+const xmlParser = createXmlToolCallParser();
+
+for await (const event of s) {
+  if (event.type === 'text_delta') {
+    // Feed text deltas to XML parser
+    const completedToolCalls = xmlParser.feed(event.delta);
+
+    // Process any completed tool calls found in XML
+    for (const toolCall of completedToolCalls) {
+      console.log(`Found XML tool call: ${toolCall.name}`, toolCall.arguments);
+
+      // Convert to standard ToolCall format
+      const standardToolCall = {
+        type: 'toolCall' as const,
+        id: `${toolCall.name}_${Date.now()}`,
+        name: toolCall.name,
+        arguments: toolCall.arguments
+      };
+
+      // Add to your context and execute tool
+      context.messages.push({
+        role: 'toolResult',
+        toolCallId: standardToolCall.id,
+        toolName: standardToolCall.name,
+        content: [{ type: 'text', text: JSON.stringify(await executeTool(standardToolCall)) }],
+        isError: false,
+        timestamp: Date.now()
+      });
+    }
+  }
+}
+```
+
+**Complete text parsing:**
+
+For non-streaming scenarios or when you have complete text:
+
+```typescript
+import { extractXmlToolCalls, hasXmlToolCalls } from '@mariozechner/pi-ai';
+
+const response = await complete(model, context);
+const fullText = response.content
+  .filter(b => b.type === 'text')
+  .map(b => (b as any).text)
+  .join('\n');
+
+// Check if text contains XML tool calls
+if (hasXmlToolCalls(fullText)) {
+  // Extract and parse all XML tool calls
+  const { text: cleanedText, toolCalls } = extractXmlToolCalls(fullText);
+
+  console.log('Cleaned text:', cleanedText);
+  console.log('Parsed tool calls:', toolCalls);
+
+  // Convert each to standard ToolCall format
+  for (const tc of toolCalls) {
+    const standardToolCall = {
+      type: 'toolCall' as const,
+      id: `${tc.name}_${Date.now()}`,
+      name: tc.name,
+      arguments: tc.arguments
+    };
+
+    // Execute and add result
+    const result = await executeTool(standardToolCall);
+    // ... add to context
+  }
+}
+```
+
+**Key-value argument parsing:**
+
+The parser can handle various argument formats beyond JSON:
+
+```typescript
+// key=value format
+<invoke name="bash">command="ls -la" timeout=30</invoke>
+
+// key: value format
+<invoke name="write">path: "test.txt", content: "hello"</invoke>
+
+// JSON format (preferred)
+<invoke name="read">{"path": "file.txt"}</invoke>
+```
+
+**Parser state management:**
+
+```typescript
+const parser = createXmlToolCallParser();
+
+// Check if currently inside a tool call tag
+if (parser.isInToolCall()) {
+  console.log('Currently parsing a tool call...');
+}
+
+// Get partial/incomplete text buffer
+const partial = parser.getPartial();
+
+// Reset parser state (for new conversation)
+parser.reset();
+```
+
+**Integration with provider streams:**
+
+When implementing a custom provider that might return XML tool calls in text content:
+
+```typescript
+// In your provider's stream function
+const xmlParser = createXmlToolCallParser();
+
+// When processing text deltas
+if (part.text) {
+  const xmlToolCalls = xmlParser.feed(part.text);
+
+  for (const xmlTc of xmlToolCalls) {
+    // Convert XML tool call to standard format
+    const toolCall: ToolCall = {
+      type: 'toolCall',
+      id: `${xmlTc.name}_${Date.now()}_${toolCallCounter++}`,
+      name: xmlTc.name,
+      arguments: xmlTc.arguments
+    };
+
+    // Emit standard tool call events
+    stream.push({ type: 'toolcall_start', contentIndex: output.content.length, partial: output });
+    stream.push({ type: 'toolcall_delta', contentIndex: output.content.length, delta: JSON.stringify(toolCall.arguments), partial: output });
+    stream.push({ type: 'toolcall_end', contentIndex: output.content.length, toolCall, partial: output });
+  }
+
+  // Continue with normal text processing
+  // ...
+}
+```
+
 ## Image Input
 
 Models with vision capabilities can process images. You can check if a model supports images via the `input` property. If you pass images to a non-vision model, they are silently ignored.

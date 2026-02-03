@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+- Added XML tool call parsing to agent loop for models that return tool calls as XML in text content. Supports multiple XML formats including `<tool_calls><invoke name="...">` and Anthropic-style `<invoke name="...">`. XML tool calls are automatically converted to standard `ToolCall` format.
+- Added `timeout` option to `AgentOptions` for configuring HTTP request timeout (provider-dependent)
+
 ### Fixed
 
 - Fixed `continue()` to resume queued steering/follow-up messages when context currently ends in an assistant message, and preserved one-at-a-time steering ordering during assistant-tail resumes ([#1312](https://github.com/badlogic/pi-mono/pull/1312) by [@ferologics](https://github.com/ferologics))

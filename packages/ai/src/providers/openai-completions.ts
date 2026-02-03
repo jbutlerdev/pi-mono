@@ -102,7 +102,7 @@ export const streamOpenAICompletions: StreamFunction<"openai-completions", OpenA
 
 		try {
 			const apiKey = options?.apiKey || getEnvApiKey(model.provider) || "";
-			const client = createClient(model, context, apiKey, options?.headers);
+			const client = createClient(model, context, apiKey, options?.headers, options?.timeout);
 			const params = buildParams(model, context, options);
 			options?.onPayload?.(params);
 			const openaiStream = await client.chat.completions.create(params, { signal: options?.signal });
@@ -347,6 +347,7 @@ function createClient(
 	context: Context,
 	apiKey?: string,
 	optionsHeaders?: Record<string, string>,
+	timeout?: number,
 ) {
 	if (!apiKey) {
 		if (!process.env.OPENAI_API_KEY) {
@@ -393,6 +394,7 @@ function createClient(
 		baseURL: model.baseUrl,
 		dangerouslyAllowBrowser: true,
 		defaultHeaders: headers,
+		timeout,
 	});
 }
 
@@ -767,8 +769,14 @@ function mapStopReason(reason: ChatCompletionChunk.Choice["finish_reason"]): Sto
 		case "content_filter":
 			return "error";
 		default: {
-			const _exhaustive: never = reason;
-			throw new Error(`Unhandled stop reason: ${_exhaustive}`);
+			// Handle unknown stop reasons (e.g., "timeout" from some providers)
+			// by treating them as errors
+			const unknown = reason as string;
+			if (unknown === "timeout") {
+				return "error";
+			}
+			console.warn(`Unknown stop reason: ${unknown}, treating as error`);
+			return "error";
 		}
 	}
 }

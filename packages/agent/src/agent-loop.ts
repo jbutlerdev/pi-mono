@@ -6,8 +6,10 @@
 import {
 	type AssistantMessage,
 	type Context,
+	createXmlToolCallParser,
 	EventStream,
 	streamSimple,
+	type ToolCall,
 	type ToolResultMessage,
 	validateToolArguments,
 } from "@mariozechner/pi-ai";
@@ -200,6 +202,7 @@ async function runLoop(
 /**
  * Stream an assistant response from the LLM.
  * This is where AgentMessage[] gets transformed to Message[] for the LLM.
+ * Also handles XML tool call parsing for models that return tool calls in text.
  */
 async function streamAssistantResponse(
 	context: AgentContext,
@@ -239,6 +242,11 @@ async function streamAssistantResponse(
 	let partialMessage: AssistantMessage | null = null;
 	let addedPartial = false;
 
+	// XML tool call parser for models that return tool calls in text
+	const xmlParser = createXmlToolCallParser();
+	const xmlToolCalls: ToolCall[] = [];
+	let xmlToolCallCounter = 0;
+
 	for await (const event of response) {
 		switch (event.type) {
 			case "start":
@@ -259,6 +267,21 @@ async function streamAssistantResponse(
 			case "toolcall_end":
 				if (partialMessage) {
 					partialMessage = event.partial;
+
+					// Parse XML tool calls from text deltas
+					if (event.type === "text_delta") {
+						const completedXmlToolCalls = xmlParser.feed(event.delta);
+						for (const xmlTc of completedXmlToolCalls) {
+							const toolCall: ToolCall = {
+								type: "toolCall",
+								id: `xml_${xmlTc.name}_${Date.now()}_${xmlToolCallCounter++}`,
+								name: xmlTc.name,
+								arguments: xmlTc.arguments,
+							};
+							xmlToolCalls.push(toolCall);
+						}
+					}
+
 					context.messages[context.messages.length - 1] = partialMessage;
 					stream.push({
 						type: "message_update",
@@ -270,7 +293,13 @@ async function streamAssistantResponse(
 
 			case "done":
 			case "error": {
-				const finalMessage = await response.result();
+				let finalMessage = await response.result();
+
+				// Merge XML tool calls into the final message if any were found
+				if (xmlToolCalls.length > 0) {
+					finalMessage = mergeXmlToolCalls(finalMessage, xmlToolCalls);
+				}
+
 				if (addedPartial) {
 					context.messages[context.messages.length - 1] = finalMessage;
 				} else {
@@ -286,6 +315,26 @@ async function streamAssistantResponse(
 	}
 
 	return await response.result();
+}
+
+/**
+ * Merge XML-parsed tool calls into an AssistantMessage.
+ * This handles models that return tool calls as XML in text content.
+ */
+function mergeXmlToolCalls(message: AssistantMessage, xmlToolCalls: ToolCall[]): AssistantMessage {
+	if (xmlToolCalls.length === 0) return message;
+
+	// Add tool calls to the message content
+	const newContent = [...message.content, ...xmlToolCalls];
+
+	// Update stop reason if we found tool calls
+	const stopReason = message.stopReason === "stop" ? "toolUse" : message.stopReason;
+
+	return {
+		...message,
+		content: newContent,
+		stopReason,
+	};
 }
 
 /**

@@ -85,6 +85,12 @@ export interface AgentOptions {
 	 * Default: 60000 (60 seconds). Set to 0 to disable the cap.
 	 */
 	maxRetryDelayMs?: number;
+
+	/**
+	 * HTTP request timeout in milliseconds. Passed to provider SDKs that support it.
+	 * Provider-dependent; not all providers support custom timeouts.
+	 */
+	timeout?: number;
 }
 
 export class Agent {
@@ -115,6 +121,7 @@ export class Agent {
 	private resolveRunningPrompt?: () => void;
 	private _thinkingBudgets?: ThinkingBudgets;
 	private _maxRetryDelayMs?: number;
+	private _timeout?: number;
 
 	constructor(opts: AgentOptions = {}) {
 		this._state = { ...this._state, ...opts.initialState };
@@ -127,6 +134,7 @@ export class Agent {
 		this.getApiKey = opts.getApiKey;
 		this._thinkingBudgets = opts.thinkingBudgets;
 		this._maxRetryDelayMs = opts.maxRetryDelayMs;
+		this._timeout = opts.timeout;
 	}
 
 	/**
@@ -171,6 +179,20 @@ export class Agent {
 	 */
 	set maxRetryDelayMs(value: number | undefined) {
 		this._maxRetryDelayMs = value;
+	}
+
+	/**
+	 * Get the current HTTP request timeout in milliseconds.
+	 */
+	get timeout(): number | undefined {
+		return this._timeout;
+	}
+
+	/**
+	 * Set the HTTP request timeout in milliseconds.
+	 */
+	set timeout(value: number | undefined) {
+		this._timeout = value;
 	}
 
 	get state(): AgentState {
@@ -409,6 +431,7 @@ export class Agent {
 			sessionId: this._sessionId,
 			thinkingBudgets: this._thinkingBudgets,
 			maxRetryDelayMs: this._maxRetryDelayMs,
+			timeout: this._timeout,
 			convertToLlm: this.convertToLlm,
 			transformContext: this.transformContext,
 			getApiKey: this.getApiKey,
