@@ -147,6 +147,7 @@
 - Added `commands.ts` example extension and exported `SlashCommandInfo` types for command discovery integrations ([#1210](https://github.com/badlogic/pi-mono/pull/1210) by [@w-winter](https://github.com/w-winter))
 - Added local path support for `pi install` and `pi remove` with relative paths stored against the target settings file ([#1216](https://github.com/badlogic/pi-mono/issues/1216))
 - Added `pi-wrapper` CLI tool that runs the coding agent with completion verification. After the agent finishes, it checks if the last message fully answers the original prompt and retries if needed. Available as a standalone binary (`pi-wrapper`) and as an import (`@mariozechner/pi-coding-agent/wrapper`). Supports options: `--model`, `--api-key`, `--max-retries`, `--verbose`.
+- Added `--stream` and `--no-stream` flags to control live output streaming when using `--check`. By default, `--check` streams output live. Use `--no-stream` to get only the final message after completion verification.
 
 ### Fixed
 
@@ -169,6 +170,7 @@
 
 - Fixed Kitty key release events leaking to parent shell over slow SSH connections by draining stdin for up to 1s on exit ([#1204](https://github.com/badlogic/pi-mono/issues/1204))
 - Fixed legacy newline handling in the editor to preserve previous newline behavior
+- Fixed `--check --no-stream` to ensure only the final message is output, preventing any duplicate output during retries
 - Fixed @ autocomplete to include hidden paths
 - Fixed submit fallback to honor configured keybindings
 - Fixed extension commands conflicting with built-in commands by skipping them ([#1196](https://github.com/badlogic/pi-mono/pull/1196) by [@haoqixu](https://github.com/haoqixu))

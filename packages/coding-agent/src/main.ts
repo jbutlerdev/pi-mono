@@ -29,7 +29,7 @@ import { SettingsManager } from "./core/settings-manager.js";
 import { printTimings, time } from "./core/timings.js";
 import { allTools } from "./core/tools/index.js";
 import { runMigrations, showDeprecationWarnings } from "./migrations.js";
-import { InteractiveMode, runPrintMode, runRpcMode } from "./modes/index.js";
+import { InteractiveMode, runRpcMode } from "./modes/index.js";
 import { initTheme, stopThemeWatcher } from "./modes/interactive/theme/theme.js";
 
 /**
@@ -516,6 +516,11 @@ export async function main(args: string[]) {
 	const { initialMessage, initialImages } = await prepareInitialMessage(parsed, settingsManager.getImageAutoResize());
 	const isInteractive = !parsed.print && parsed.mode === undefined;
 	const mode = parsed.mode || "text";
+
+	// --check flag implies print mode
+	if (parsed.check) {
+		parsed.print = true;
+	}
 	initTheme(settingsManager.getTheme(), isInteractive);
 
 	// Show deprecation warnings in interactive mode
@@ -609,13 +614,22 @@ export async function main(args: string[]) {
 			verbose: parsed.verbose,
 		});
 		await mode.run();
-	} else {
-		await runPrintMode(session, {
-			mode,
-			messages: parsed.messages,
-			initialMessage,
-			initialImages,
-		});
+	} else if (parsed.check) {
+		const { runPrintModeWithCheck } = await import("./modes/print-mode.js");
+		await runPrintModeWithCheck(
+			session,
+			{
+				mode,
+				messages: parsed.messages,
+				initialMessage,
+				initialImages,
+				maxRetries: parsed.maxRetries,
+				verbose: parsed.verbose,
+				stream: parsed.stream,
+			},
+			authStorage,
+			modelRegistry,
+		);
 		stopThemeWatcher();
 		if (process.stdout.writableLength > 0) {
 			await new Promise<void>((resolve) => process.stdout.once("drain", resolve));

@@ -39,7 +39,10 @@ export interface Args {
 	themes?: string[];
 	noThemes?: boolean;
 	listModels?: string | true;
+	check?: boolean; // Enable completion verification with auto-retry
+	maxRetries?: number; // Max retries for completion check
 	verbose?: boolean;
+	stream?: boolean; // Stream output live (default: true)
 	messages: string[];
 	fileArgs: string[];
 	/** Unknown flags (potentially extension flags) - map of flag name to value */
@@ -73,6 +76,14 @@ export function parseArgs(args: string[], extensionFlags?: Map<string, { type: "
 			}
 		} else if (arg === "--continue" || arg === "-c") {
 			result.continue = true;
+		} else if (arg === "--check") {
+			result.check = true;
+		} else if (arg === "--max-retries" && i + 1 < args.length) {
+			result.maxRetries = Number.parseInt(args[++i], 10);
+		} else if (arg === "--stream") {
+			result.stream = true;
+		} else if (arg === "--no-stream") {
+			result.stream = false;
 		} else if (arg === "--resume" || arg === "-r") {
 			result.resume = true;
 		} else if (arg === "--provider" && i + 1 < args.length) {
@@ -205,6 +216,10 @@ ${chalk.bold("Options:")}
   --append-system-prompt <text>  Append text or file contents to the system prompt
   --mode <mode>                  Output mode: text (default), json, or rpc
   --print, -p                    Non-interactive mode: process prompt and exit
+  --check                        Enable completion verification with auto-retry
+  --max-retries <n>             Maximum retries for completion check (default: 3)
+  --stream                       Stream output live (default for --check)
+  --no-stream                    Disable streaming; output only final message
   --continue, -c                 Continue previous session
   --resume, -r                   Select a session to resume
   --session <path>               Use specific session file

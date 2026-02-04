@@ -13,7 +13,7 @@ import {
 	createAgentSession,
 	ModelRegistry,
 	SessionManager,
-} from "@mariozechner/pi-coding-agent";
+} from "./src/index.js";
 
 /**
  * Check if the last message fully answers the original prompt
