@@ -5,7 +5,7 @@
  * a summary of the branch being left so context isn't lost.
  */
 
-import type { AgentMessage } from "@mariozechner/pi-agent-core";
+import type { AgentMessage } from "@jbutlerdev/pi-agent-core";
 import type { Model } from "@jbutlerdev/pi-ai";
 import { completeSimple } from "@jbutlerdev/pi-ai";
 import {

@@ -1,4 +1,4 @@
-import type { ThinkingLevel } from "@mariozechner/pi-agent-core";
+import type { ThinkingLevel } from "@jbutlerdev/pi-agent-core";
 import {
 	Container,
 	getCapabilities,

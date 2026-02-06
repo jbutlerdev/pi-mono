@@ -5,7 +5,7 @@
  * and after compaction the session is reloaded.
  */
 
-import type { AgentMessage } from "@mariozechner/pi-agent-core";
+import type { AgentMessage } from "@jbutlerdev/pi-agent-core";
 import type { AssistantMessage, Model, Usage } from "@jbutlerdev/pi-ai";
 import { completeSimple } from "@jbutlerdev/pi-ai";
 import {

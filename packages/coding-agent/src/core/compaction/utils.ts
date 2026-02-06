@@ -2,7 +2,7 @@
  * Shared utilities for compaction and branch summarization.
  */
 
-import type { AgentMessage } from "@mariozechner/pi-agent-core";
+import type { AgentMessage } from "@jbutlerdev/pi-agent-core";
 import type { Message } from "@jbutlerdev/pi-ai";
 
 // ============================================================================

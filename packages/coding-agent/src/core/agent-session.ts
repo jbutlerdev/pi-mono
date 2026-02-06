@@ -22,7 +22,7 @@ import type {
 	AgentState,
 	AgentTool,
 	ThinkingLevel,
-} from "@mariozechner/pi-agent-core";
+} from "@jbutlerdev/pi-agent-core";
 import type { AssistantMessage, ImageContent, Message, Model, TextContent } from "@jbutlerdev/pi-ai";
 import { isContextOverflow, modelsAreEqual, resetApiProviders, supportsXhigh } from "@jbutlerdev/pi-ai";
 import { getDocsPath } from "../config.js";

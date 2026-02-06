@@ -13,7 +13,7 @@ import type {
 	AgentToolResult,
 	AgentToolUpdateCallback,
 	ThinkingLevel,
-} from "@mariozechner/pi-agent-core";
+} from "@jbutlerdev/pi-agent-core";
 import type {
 	Api,
 	AssistantMessageEventStream,

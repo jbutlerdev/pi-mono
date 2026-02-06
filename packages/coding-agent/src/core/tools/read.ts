@@ -1,4 +1,4 @@
-import type { AgentTool } from "@mariozechner/pi-agent-core";
+import type { AgentTool } from "@jbutlerdev/pi-agent-core";
 import type { ImageContent, TextContent } from "@jbutlerdev/pi-ai";
 import { type Static, Type } from "@sinclair/typebox";
 import { constants } from "fs";

@@ -10,7 +10,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createJiti } from "@mariozechner/jiti";
-import * as _bundledPiAgentCore from "@mariozechner/pi-agent-core";
+import * as _bundledPiAgentCore from "@jbutlerdev/pi-agent-core";
 import * as _bundledPiAi from "@jbutlerdev/pi-ai";
 import type { KeyId } from "@mariozechner/pi-tui";
 import * as _bundledPiTui from "@mariozechner/pi-tui";
@@ -40,7 +40,7 @@ import type {
 /** Modules available to extensions via virtualModules (for compiled Bun binary) */
 const VIRTUAL_MODULES: Record<string, unknown> = {
 	"@sinclair/typebox": _bundledTypebox,
-	"@mariozechner/pi-agent-core": _bundledPiAgentCore,
+	"@jbutlerdev/pi-agent-core": _bundledPiAgentCore,
 	"@mariozechner/pi-tui": _bundledPiTui,
 	"@jbutlerdev/pi-ai": _bundledPiAi,
 	"@jbutlerdev/pi-coding-agent": _bundledPiCodingAgent,
@@ -64,7 +64,7 @@ function getAliases(): Record<string, string> {
 
 	_aliases = {
 		"@jbutlerdev/pi-coding-agent": packageIndex,
-		"@mariozechner/pi-agent-core": require.resolve("@mariozechner/pi-agent-core"),
+		"@jbutlerdev/pi-agent-core": require.resolve("@jbutlerdev/pi-agent-core"),
 		"@mariozechner/pi-tui": require.resolve("@mariozechner/pi-tui"),
 		"@jbutlerdev/pi-ai": require.resolve("@jbutlerdev/pi-ai"),
 		"@sinclair/typebox": typeboxRoot,

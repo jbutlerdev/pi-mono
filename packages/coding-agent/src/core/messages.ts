@@ -5,7 +5,7 @@
  * and provides a transformer to convert them to LLM-compatible messages.
  */
 
-import type { AgentMessage } from "@mariozechner/pi-agent-core";
+import type { AgentMessage } from "@jbutlerdev/pi-agent-core";
 import type { ImageContent, Message, TextContent } from "@jbutlerdev/pi-ai";
 import { extractXmlToolCalls } from "@jbutlerdev/pi-ai";
 
@@ -68,7 +68,7 @@ export interface CompactionSummaryMessage {
 }
 
 // Extend CustomAgentMessages via declaration merging
-declare module "@mariozechner/pi-agent-core" {
+declare module "@jbutlerdev/pi-agent-core" {
 	interface CustomAgentMessages {
 		bashExecution: BashExecutionMessage;
 		custom: CustomMessage;
