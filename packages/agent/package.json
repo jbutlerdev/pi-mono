@@ -1,7 +1,12 @@
 {
-	"name": "@mariozechner/pi-agent-core",
-	"version": "0.52.6",
+	"name": "@jbutlerdev/pi-agent-core",
+	"version": "0.52.8",
 	"description": "General-purpose agent with transport abstraction, state management, and attachment support",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/jbutlerdev/pi-mono.git",
+		"directory": "packages/agent"
+	},
 	"type": "module",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
@@ -17,7 +22,7 @@
 		"prepublishOnly": "npm run clean && npm run build"
 	},
 	"dependencies": {
-		"@mariozechner/pi-ai": "^0.52.6"
+		"@jbutlerdev/pi-ai": "^0.52.8"
 	},
 	"keywords": [
 		"ai",

@@ -12,7 +12,7 @@ import {
 	type ToolCall,
 	type ToolResultMessage,
 	validateToolArguments,
-} from "@mariozechner/pi-ai";
+} from "@jbutlerdev/pi-ai";
 import type {
 	AgentContext,
 	AgentEvent,
