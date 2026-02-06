@@ -11,7 +11,7 @@ import {
 	type ResourceLoader,
 	SessionManager,
 	type Skill,
-} from "@mariozechner/pi-coding-agent";
+} from "@jbutlerdev/pi-coding-agent";
 import { existsSync, readFileSync } from "fs";
 import { mkdir, writeFile } from "fs/promises";
 import { homedir } from "os";

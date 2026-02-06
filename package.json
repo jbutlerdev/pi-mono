@@ -44,7 +44,7 @@
 	"version": "0.0.3",
 	"dependencies": {
 		"@mariozechner/jiti": "^2.6.5",
-		"@jbutlerdev/pi-coding-agent": "^0.30.2",
+		"@jbutlerdev/pi-coding-agent": "^0.52.6",
 		"get-east-asian-width": "^1.4.0"
 	},
 	"overrides": {

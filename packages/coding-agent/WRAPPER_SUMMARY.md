@@ -69,7 +69,7 @@ Options:
 ### Programmatic Usage
 
 ```typescript
-import { runWrapperWithVerification } from "@mariozechner/pi-coding-agent/wrapper";
+import { runWrapperWithVerification } from "@jbutlerdev/pi-coding-agent/wrapper";
 
 await runWrapperWithVerification({
   prompt: "Your task here",
@@ -110,7 +110,7 @@ The wrapper was:
 
 ## Next Steps for Users
 
-1. After installing `@mariozechner/pi-coding-agent`, `pi-wrapper` will be available globally
+1. After installing `@jbutlerdev/pi-coding-agent`, `pi-wrapper` will be available globally
 2. Use for automated tasks where complete responses are critical
 3. Use `pi` for interactive development sessions
 4. See `WRAPPER.md` for full documentation

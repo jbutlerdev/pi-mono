@@ -146,7 +146,7 @@
 - Added `ExtensionAPI.getCommands()` to let extensions list available slash commands (extensions, prompt templates, skills) for invocation via `prompt` ([#1210](https://github.com/badlogic/pi-mono/pull/1210) by [@w-winter](https://github.com/w-winter))
 - Added `commands.ts` example extension and exported `SlashCommandInfo` types for command discovery integrations ([#1210](https://github.com/badlogic/pi-mono/pull/1210) by [@w-winter](https://github.com/w-winter))
 - Added local path support for `pi install` and `pi remove` with relative paths stored against the target settings file ([#1216](https://github.com/badlogic/pi-mono/issues/1216))
-- Added `pi-wrapper` CLI tool that runs the coding agent with completion verification. After the agent finishes, it checks if the last message fully answers the original prompt and retries if needed. Available as a standalone binary (`pi-wrapper`) and as an import (`@mariozechner/pi-coding-agent/wrapper`). Supports options: `--model`, `--api-key`, `--max-retries`, `--verbose`.
+- Added `pi-wrapper` CLI tool that runs the coding agent with completion verification. After the agent finishes, it checks if the last message fully answers the original prompt and retries if needed. Available as a standalone binary (`pi-wrapper`) and as an import (`@jbutlerdev/pi-coding-agent/wrapper`). Supports options: `--model`, `--api-key`, `--max-retries`, `--verbose`.
 - Added `--stream` and `--no-stream` flags to control live output streaming when using `--check`. By default, `--check` streams output live. Use `--no-stream` to get only the final message after completion verification.
 
 ### Fixed
@@ -208,7 +208,7 @@
 - **Android/Termux support**: Pi now runs on Android via Termux. Install with:
   ```bash
   pkg install nodejs termux-api git
-  npm install -g @mariozechner/pi-coding-agent
+  npm install -g @jbutlerdev/pi-coding-agent
   mkdir -p ~/.pi/agent
   echo "You are running on Android in Termux." > ~/.pi/agent/AGENTS.md
   ```
@@ -724,7 +724,7 @@ There are multiple SDK breaking changes since v0.49.3. For the quickest migratio
 
 ### Fixed
 
-- Extensions now load correctly in compiled Bun binary using `@mariozechner/jiti` fork with `virtualModules` support. Bundled packages (`@sinclair/typebox`, `@mariozechner/pi-tui`, `@mariozechner/pi-ai`, `@mariozechner/pi-coding-agent`) are accessible to extensions without filesystem node_modules.
+- Extensions now load correctly in compiled Bun binary using `@mariozechner/jiti` fork with `virtualModules` support. Bundled packages (`@sinclair/typebox`, `@mariozechner/pi-tui`, `@mariozechner/pi-ai`, `@jbutlerdev/pi-coding-agent`) are accessible to extensions without filesystem node_modules.
 
 ## [0.45.1] - 2026-01-13
 
@@ -1105,16 +1105,16 @@ No recursion beyond one level. Complex packages must use the `package.json` mani
 
 ```typescript
 // Before (hook)
-import type { HookAPI, HookContext } from "@mariozechner/pi-coding-agent";
+import type { HookAPI, HookContext } from "@jbutlerdev/pi-coding-agent";
 export default function (pi: HookAPI) { ... }
 
 // Before (custom tool)
-import type { CustomToolFactory } from "@mariozechner/pi-coding-agent";
+import type { CustomToolFactory } from "@jbutlerdev/pi-coding-agent";
 const factory: CustomToolFactory = (pi) => ({ name: "my_tool", ... });
 export default factory;
 
 // After (both are now extensions)
-import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import type { ExtensionAPI } from "@jbutlerdev/pi-coding-agent";
 export default function (pi: ExtensionAPI) {
   pi.on("tool_call", async (event, ctx) => { ... });
   pi.registerTool({ name: "my_tool", ... });
@@ -1557,7 +1557,7 @@ See [docs/custom-tools.md](docs/custom-tools.md) and [examples/custom-tools/](ex
 import {
   discoverAuthStorage,
   discoverModels,
-} from "@mariozechner/pi-coding-agent";
+} from "@jbutlerdev/pi-coding-agent";
 
 const authStorage = discoverAuthStorage(); // ~/.pi/agent/auth.json
 const modelRegistry = discoverModels(authStorage); // + ~/.pi/agent/models.json
@@ -1955,7 +1955,7 @@ Total color count increased from 46 to 50. See [docs/themes.md](docs/themes.md) 
 
 ### Added
 
-- **OAuth and model config exports**: Scripts using `AgentSession` directly can now import `getAvailableModels`, `getApiKeyForModel`, `findModel`, `login`, `logout`, and `getOAuthProviders` from `@mariozechner/pi-coding-agent` to reuse OAuth token storage and model resolution. ([#245](https://github.com/badlogic/pi-mono/issues/245))
+- **OAuth and model config exports**: Scripts using `AgentSession` directly can now import `getAvailableModels`, `getApiKeyForModel`, `findModel`, `login`, `logout`, and `getOAuthProviders` from `@jbutlerdev/pi-coding-agent` to reuse OAuth token storage and model resolution. ([#245](https://github.com/badlogic/pi-mono/issues/245))
 
 - **xhigh thinking level for gpt-5.2 models**: The thinking level selector and shift+tab cycling now show xhigh option for gpt-5.2 and gpt-5.2-codex models (in addition to gpt-5.1-codex-max). ([#236](https://github.com/badlogic/pi-mono/pull/236) by [@theBucky](https://github.com/theBucky))
 
@@ -1981,7 +1981,7 @@ Total color count increased from 46 to 50. See [docs/themes.md](docs/themes.md) 
 
 - **Subagent orchestration example**: Added comprehensive custom tool example for spawning and orchestrating sub-agents with isolated context windows. Includes scout/planner/reviewer/worker agents and workflow commands for multi-agent pipelines. ([#215](https://github.com/badlogic/pi-mono/pull/215) by [@nicobailon](https://github.com/nicobailon))
 
-- **`getMarkdownTheme()` export**: Custom tools can now import `getMarkdownTheme()` from `@mariozechner/pi-coding-agent` to use the same markdown styling as the main UI.
+- **`getMarkdownTheme()` export**: Custom tools can now import `getMarkdownTheme()` from `@jbutlerdev/pi-coding-agent` to use the same markdown styling as the main UI.
 
 - **`pi.exec()` signal and timeout support**: Custom tools and hooks can now pass `{ signal, timeout }` options to `pi.exec()` for cancellation and timeout handling. The result includes a `killed` flag when the process was terminated.
 
@@ -2053,7 +2053,7 @@ Total color count increased from 46 to 50. See [docs/themes.md](docs/themes.md) 
   - `rpc.md`: Added missing `hook_error` event documentation
   - `README.md`: Complete settings table, condensed philosophy section, standardized OAuth docs
 
-- Hooks loader now supports same import aliases as custom tools (`@sinclair/typebox`, `@mariozechner/pi-ai`, `@mariozechner/pi-tui`, `@mariozechner/pi-coding-agent`).
+- Hooks loader now supports same import aliases as custom tools (`@sinclair/typebox`, `@mariozechner/pi-ai`, `@mariozechner/pi-tui`, `@jbutlerdev/pi-coding-agent`).
 
 ### Breaking Changes
 
