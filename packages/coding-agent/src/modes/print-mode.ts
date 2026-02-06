@@ -6,7 +6,7 @@
  * - `pi --mode json "prompt"` - JSON event stream
  */
 
-import type { AssistantMessage, ImageContent } from "@mariozechner/pi-ai";
+import type { AssistantMessage, ImageContent } from "@jbutlerdev/pi-ai";
 import type { AgentSession } from "../core/agent-session.js";
 import type { AuthStorage } from "../core/auth-storage.js";
 import type { ModelRegistry } from "../core/model-registry.js";

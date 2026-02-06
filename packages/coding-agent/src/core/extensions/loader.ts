@@ -11,7 +11,7 @@ import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createJiti } from "@mariozechner/jiti";
 import * as _bundledPiAgentCore from "@mariozechner/pi-agent-core";
-import * as _bundledPiAi from "@mariozechner/pi-ai";
+import * as _bundledPiAi from "@jbutlerdev/pi-ai";
 import type { KeyId } from "@mariozechner/pi-tui";
 import * as _bundledPiTui from "@mariozechner/pi-tui";
 // Static imports of packages that extensions may use.
@@ -42,7 +42,7 @@ const VIRTUAL_MODULES: Record<string, unknown> = {
 	"@sinclair/typebox": _bundledTypebox,
 	"@mariozechner/pi-agent-core": _bundledPiAgentCore,
 	"@mariozechner/pi-tui": _bundledPiTui,
-	"@mariozechner/pi-ai": _bundledPiAi,
+	"@jbutlerdev/pi-ai": _bundledPiAi,
 	"@jbutlerdev/pi-coding-agent": _bundledPiCodingAgent,
 };
 
@@ -66,7 +66,7 @@ function getAliases(): Record<string, string> {
 		"@jbutlerdev/pi-coding-agent": packageIndex,
 		"@mariozechner/pi-agent-core": require.resolve("@mariozechner/pi-agent-core"),
 		"@mariozechner/pi-tui": require.resolve("@mariozechner/pi-tui"),
-		"@mariozechner/pi-ai": require.resolve("@mariozechner/pi-ai"),
+		"@jbutlerdev/pi-ai": require.resolve("@jbutlerdev/pi-ai"),
 		"@sinclair/typebox": typeboxRoot,
 	};
 

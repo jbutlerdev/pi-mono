@@ -15,7 +15,7 @@ import {
 	type Message,
 	type Model,
 	type OAuthProvider,
-} from "@mariozechner/pi-ai";
+} from "@jbutlerdev/pi-ai";
 import type {
 	AutocompleteItem,
 	EditorAction,

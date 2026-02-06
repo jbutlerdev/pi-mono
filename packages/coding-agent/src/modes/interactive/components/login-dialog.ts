@@ -1,4 +1,4 @@
-import { getOAuthProviders } from "@mariozechner/pi-ai";
+import { getOAuthProviders } from "@jbutlerdev/pi-ai";
 import { Container, type Focusable, getEditorKeybindings, Input, Spacer, Text, type TUI } from "@mariozechner/pi-tui";
 import { exec } from "child_process";
 import { theme } from "../theme/theme.js";

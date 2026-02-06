@@ -1,7 +1,12 @@
 {
-	"name": "@mariozechner/pi-ai",
+	"name": "@jbutlerdev/pi-ai",
 	"version": "0.52.6",
 	"description": "Unified LLM API with automatic model discovery and provider configuration",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/jbutlerdev/pi-mono.git",
+		"directory": "packages/ai"
+	},
 	"type": "module",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",

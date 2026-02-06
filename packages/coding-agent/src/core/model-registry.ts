@@ -14,7 +14,7 @@ import {
 	registerApiProvider,
 	registerOAuthProvider,
 	type SimpleStreamOptions,
-} from "@mariozechner/pi-ai";
+} from "@jbutlerdev/pi-ai";
 import { type Static, Type } from "@sinclair/typebox";
 import AjvModule from "ajv";
 import { existsSync, readFileSync } from "fs";

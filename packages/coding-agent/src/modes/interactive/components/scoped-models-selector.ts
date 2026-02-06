@@ -1,4 +1,4 @@
-import type { Model } from "@mariozechner/pi-ai";
+import type { Model } from "@jbutlerdev/pi-ai";
 import {
 	Container,
 	type Focusable,

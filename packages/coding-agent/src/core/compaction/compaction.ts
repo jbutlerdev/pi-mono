@@ -6,8 +6,8 @@
  */
 
 import type { AgentMessage } from "@mariozechner/pi-agent-core";
-import type { AssistantMessage, Model, Usage } from "@mariozechner/pi-ai";
-import { completeSimple } from "@mariozechner/pi-ai";
+import type { AssistantMessage, Model, Usage } from "@jbutlerdev/pi-ai";
+import { completeSimple } from "@jbutlerdev/pi-ai";
 import {
 	convertToLlm,
 	createBranchSummaryMessage,

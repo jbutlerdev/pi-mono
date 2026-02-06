@@ -1,4 +1,4 @@
-import { getOAuthProviders, type OAuthProviderInterface } from "@mariozechner/pi-ai";
+import { getOAuthProviders, type OAuthProviderInterface } from "@jbutlerdev/pi-ai";
 import { Container, getEditorKeybindings, Spacer, TruncatedText } from "@mariozechner/pi-tui";
 import type { AuthStorage } from "../../../core/auth-storage.js";
 import { theme } from "../theme/theme.js";
