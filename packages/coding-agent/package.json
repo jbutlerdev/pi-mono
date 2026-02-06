@@ -37,7 +37,7 @@
 	"scripts": {
 		"clean": "shx rm -rf dist",
 		"dev": "tsgo -p tsconfig.build.json --watch --preserveWatchOutput",
-		"build": "tsgo -p tsconfig.build.json && shx chmod +x dist/cli.js dist/wrapper.js && npm run copy-assets",
+		"build": "tsgo -p tsconfig.build.json && tsgo -p tsconfig.wrapper.json && shx chmod +x dist/cli.js dist/wrapper.js && npm run copy-assets",
 		"build:binary": "npm run build && bun build --compile ./dist/cli.js --outfile dist/pi && npm run copy-binary-assets",
 		"copy-assets": "shx mkdir -p dist/modes/interactive/theme && shx cp src/modes/interactive/theme/*.json dist/modes/interactive/theme/ && shx mkdir -p dist/core/export-html/vendor && shx cp src/core/export-html/template.html src/core/export-html/template.css src/core/export-html/template.js dist/core/export-html/ && shx cp src/core/export-html/vendor/*.js dist/core/export-html/vendor/",
 		"copy-binary-assets": "shx cp package.json dist/ && shx cp README.md dist/ && shx cp CHANGELOG.md dist/ && shx mkdir -p dist/theme && shx cp src/modes/interactive/theme/*.json dist/theme/ && shx mkdir -p dist/export-html/vendor && shx cp src/core/export-html/template.html dist/export-html/ && shx cp src/core/export-html/vendor/*.js dist/export-html/vendor/ && shx cp -r docs dist/ && shx cp -r examples dist/ && shx cp ../../node_modules/@silvia-odwyer/photon-node/photon_rs_bg.wasm dist/",
@@ -54,7 +54,8 @@
 		"cli-highlight": "^2.1.11",
 		"diff": "^8.0.2",
 		"file-type": "^21.1.1",
-		"glob": "^11.0.3",
+		"glob": "^13.0.1",
+		"hosted-git-info": "^9.0.2",
 		"ignore": "^7.0.5",
 		"marked": "^15.0.12",
 		"minimatch": "^10.1.1",
@@ -66,6 +67,7 @@
 	},
 	"devDependencies": {
 		"@types/diff": "^7.0.2",
+		"@types/hosted-git-info": "^3.0.5",
 		"@types/ms": "^2.1.0",
 		"@types/node": "^24.3.0",
 		"@types/proper-lockfile": "^4.1.4",

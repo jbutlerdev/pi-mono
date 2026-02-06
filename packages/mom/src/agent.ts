@@ -1,5 +1,3 @@
-import { Agent, type AgentEvent } from "@mariozechner/pi-agent-core";
-import { getModel, type ImageContent } from "@mariozechner/pi-ai";
 import {
 	AgentSession,
 	AuthStorage,
@@ -12,6 +10,8 @@ import {
 	SessionManager,
 	type Skill,
 } from "@jbutlerdev/pi-coding-agent";
+import { Agent, type AgentEvent } from "@mariozechner/pi-agent-core";
+import { getModel, type ImageContent } from "@mariozechner/pi-ai";
 import { existsSync, readFileSync } from "fs";
 import { mkdir, writeFile } from "fs/promises";
 import { homedir } from "os";
