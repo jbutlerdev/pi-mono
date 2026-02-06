@@ -19,7 +19,7 @@ import {
 	type ResourceLoader,
 	SessionManager,
 	SettingsManager,
-} from "@mariozechner/pi-coding-agent";
+} from "@jbutlerdev/pi-coding-agent";
 
 // Custom auth storage location
 const authStorage = new AuthStorage("/tmp/my-agent/auth.json");

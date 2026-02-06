@@ -5,7 +5,7 @@
  */
 
 import { getModel } from "@mariozechner/pi-ai";
-import { AuthStorage, createAgentSession, ModelRegistry } from "@mariozechner/pi-coding-agent";
+import { AuthStorage, createAgentSession, ModelRegistry } from "@jbutlerdev/pi-coding-agent";
 
 // Set up auth storage and model registry
 const authStorage = new AuthStorage();

@@ -4,10 +4,10 @@ The `pi-wrapper` is a CLI tool that runs the pi coding agent with automatic comp
 
 ## Installation
 
-After installing `@mariozechner/pi-coding-agent`, the wrapper is available as:
+After installing `@jbutlerdev/pi-coding-agent`, the wrapper is available as:
 
 - **CLI tool**: `pi-wrapper` (installed globally with the package)
-- **Programmatic import**: `@mariozechner/pi-coding-agent/wrapper`
+- **Programmatic import**: `@jbutlerdev/pi-coding-agent/wrapper`
 
 ## Usage
 
@@ -46,7 +46,7 @@ pi-wrapper "Review the code for security issues" --model claude-sonnet-4-2025051
 ### Programmatic Usage
 
 ```typescript
-import { runWrapperWithVerification } from "@mariozechner/pi-coding-agent/wrapper";
+import { runWrapperWithVerification } from "@jbutlerdev/pi-coding-agent/wrapper";
 
 await runWrapperWithVerification({
   prompt: "Refactor this function to be more efficient",

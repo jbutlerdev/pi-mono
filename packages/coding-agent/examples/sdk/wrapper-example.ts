@@ -5,7 +5,7 @@
  * to run tasks with automatic completion verification.
  */
 
-import { runWrapperWithVerification } from "@mariozechner/pi-coding-agent/wrapper";
+import { runWrapperWithVerification } from "@jbutlerdev/pi-coding-agent/wrapper";
 
 // Basic usage with environment variable for API key
 await runWrapperWithVerification({
