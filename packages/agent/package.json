@@ -1,6 +1,6 @@
 {
 	"name": "@jbutlerdev/pi-agent-core",
-	"version": "0.52.8",
+	"version": "0.52.9",
 	"description": "General-purpose agent with transport abstraction, state management, and attachment support",
 	"repository": {
 		"type": "git",
@@ -22,7 +22,7 @@
 		"prepublishOnly": "npm run clean && npm run build"
 	},
 	"dependencies": {
-		"@jbutlerdev/pi-ai": "^0.52.8"
+		"@jbutlerdev/pi-ai": "^0.52.9"
 	},
 	"keywords": [
 		"ai",

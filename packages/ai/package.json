@@ -1,6 +1,6 @@
 {
 	"name": "@jbutlerdev/pi-ai",
-	"version": "0.52.8",
+	"version": "0.52.9",
 	"description": "Unified LLM API with automatic model discovery and provider configuration",
 	"repository": {
 		"type": "git",
