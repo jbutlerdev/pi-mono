@@ -7,7 +7,7 @@
 
 import type { AgentMessage } from "@mariozechner/pi-agent-core";
 import type { ImageContent, Message, TextContent } from "@mariozechner/pi-ai";
-import { extractXmlToolCalls } from "@mariozechner/pi-ai";
+import { extractXmlToolCalls } from "../utils/xml-tool-calls.js";
 
 export const COMPACTION_SUMMARY_PREFIX = `The conversation history before this point was compacted into the following summary:
 
