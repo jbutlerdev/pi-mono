@@ -298,7 +298,6 @@ export class SandboxIframe extends LitElement {
 				}
 
 				RUNTIME_MESSAGE_ROUTER.unregisterSandbox(sandboxId);
-				signal?.removeEventListener("abort", abortHandler);
 				clearTimeout(timeoutId);
 				this.iframe?.remove();
 				this.iframe = undefined;
@@ -314,7 +313,7 @@ export class SandboxIframe extends LitElement {
 			};
 
 			if (signal) {
-				signal.addEventListener("abort", abortHandler);
+				signal.addEventListener("abort", abortHandler, { once: true });
 			}
 
 			// Timeout handler (30 seconds)

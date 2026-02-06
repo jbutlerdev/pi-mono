@@ -563,7 +563,7 @@ export const streamGoogleGeminiCli: StreamFunction<"google-gemini-cli", GoogleGe
 				const abortHandler = () => {
 					void reader.cancel().catch(() => {});
 				};
-				options?.signal?.addEventListener("abort", abortHandler);
+				options?.signal?.addEventListener("abort", abortHandler, { once: true });
 
 				try {
 					while (true) {

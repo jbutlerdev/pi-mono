@@ -618,7 +618,12 @@ export async function runRpcMode(session: AgentSession): Promise<never> {
 			await checkShutdownRequested();
 		} catch (e: any) {
 			output(error(undefined, "parse", `Failed to parse command: ${e.message}`));
+			// Don't close rl, just wait for the next line
 		}
+	});
+
+	rl.on("error", (err) => {
+		output(error(undefined, "readline", `Readline error: ${err.message}`));
 	});
 
 	// Keep process alive forever

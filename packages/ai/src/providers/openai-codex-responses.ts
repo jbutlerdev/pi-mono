@@ -88,10 +88,14 @@ function sleep(ms: number, signal?: AbortSignal): Promise<void> {
 			return;
 		}
 		const timeout = setTimeout(resolve, ms);
-		signal?.addEventListener("abort", () => {
-			clearTimeout(timeout);
-			reject(new Error("Request was aborted"));
-		});
+		signal?.addEventListener(
+			"abort",
+			() => {
+				clearTimeout(timeout);
+				reject(new Error("Request was aborted"));
+			},
+			{ once: true },
+		);
 	});
 }
 
