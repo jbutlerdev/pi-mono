@@ -635,5 +635,18 @@ export async function main(args: string[]) {
 			await new Promise<void>((resolve) => process.stdout.once("drain", resolve));
 		}
 		process.exit(0);
+	} else {
+		const { runPrintMode } = await import("./modes/print-mode.js");
+		await runPrintMode(session, {
+			mode,
+			messages: parsed.messages,
+			initialMessage,
+			initialImages,
+		});
+		stopThemeWatcher();
+		if (process.stdout.writableLength > 0) {
+			await new Promise<void>((resolve) => process.stdout.once("drain", resolve));
+		}
+		process.exit(0);
 	}
 }
